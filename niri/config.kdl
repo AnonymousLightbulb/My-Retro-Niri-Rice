@@ -169,7 +169,7 @@ layout {
     }
 
     // You can change the default width of the new windows.
-    default-column-width { proportion 0.5; }
+    default-column-width { proportion 0.3333333333333333333; }
     // If you leave the brackets empty, the windows themselves will decide their initial width.
     // default-column-width {}
 
@@ -187,7 +187,7 @@ layout {
     // You can change how the focus ring looks.
     focus-ring {
         // Uncomment this line to disable the focus ring.
-        // off
+        off
 
         // How many logical pixels the ring extends out from the windows.
         width 4
@@ -226,11 +226,10 @@ layout {
     border {
         // The settings are the same as for the focus ring.
         // If you enable the border, you probably want to disable the focus ring.
-        off
 
-        width 4
-        active-color "#ffc87f"
-        inactive-color "#505050"
+        width 6
+        active-color "#003ad9"
+        inactive-color "#7683d9"
 
         // Color of the border around windows that request your attention.
         urgent-color "#9b0000"
@@ -300,8 +299,11 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "xfce4-panel"
-spawn-at-startup "swaybg" "-i" "/home/roseb/Important_Data/Images/Wallpaper.png"
-spawn-at-startup "/usr/lib/mate-polkit/polkit-mate-authentication-agent-1"
+spawn-at-startup "swaybg" "-i" "/home/roseb/Important_Data/Pictures/Wallpaper.png"
+spawn-at-startup "/usr/libexec/polkit-mate-authentication-agent-1"
+spawn-at-startup "pipewire"
+spawn-at-startup "wireplumber"
+spawn-at-startup "pipewire-pulse"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -354,7 +356,7 @@ window-rule {
     // This app-id regular expression will work for both:
     // - host Firefox (app-id is "firefox")
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match app-id=r#"firefox-esr$"# title="^Picture-in-Picture$"
     open-floating true
 }
 
@@ -372,8 +374,8 @@ window-rule {
 
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
-/-window-rule {
-    geometry-corner-radius 12
+window-rule {
+    geometry-corner-radius 3
     clip-to-geometry true
 }
 
@@ -384,44 +386,55 @@ environment {
   QT_QPA_PLATFORMTHEME "gtk3"
   QT_QPA_PLATFORMTHEME_QT6 "gtk3"
   TERMINAL "kitty"
-  XCURSOR_SIZE "48"
-WAYLAND_CURSOR_SIZE "48"
+  XCURSOR_SIZE "24"
+  XCURSOR_THEME "standard-with-shadow"
+  WAYLAND_CURSOR_SIZE "24"
 }
 cursor {
-    xcursor-size 48
+    xcursor-size 24
+    xcursor-theme "standard-with-shadow"
 }
 
 //prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 animations {
     workspace-switch {
+        off
         spring damping-ratio=0.80 stiffness=523 epsilon=0.0001
     }
     window-open {
+        off
         duration-ms 150
         curve "ease-out-expo"
     }
     window-close {
-        duration-ms 150
+        off
+        duration-ms 150;
         curve "ease-out-quad"
     }
     horizontal-view-movement {
+        off
         spring damping-ratio=0.85 stiffness=423 epsilon=0.0001
     }
     window-movement {
+        off
         spring damping-ratio=0.75 stiffness=323 epsilon=0.0001
     }
     window-resize {
+        off
         spring damping-ratio=0.85 stiffness=423 epsilon=0.0001
     }
     config-notification-open-close {
+        off
         spring damping-ratio=0.65 stiffness=923 epsilon=0.001
     }
     screenshot-ui-open {
+        off
         duration-ms 200
         curve "ease-out-quad"
     }
     overview-open-close {
+        off
         spring damping-ratio=0.85 stiffness=800 epsilon=0.0001
     }
 }
@@ -466,26 +479,23 @@ window-rule {
     match app-id="zen"
     match app-id="com.mitchellh.ghostty"
     match app-id="kitty"
+    match app-id="cool-retro-term"
     draw-border-with-background false
 }
+//window-rule {
+//    match is-active=false
+//    exclude app-id="kitty"
+//    exclude app-id="firefox"
+//    exclude app-id="Godot"
+//    exclude app-id="discord"
+//    exclude app-id="ONLYOFFICE"
+//
+//    opacity 0.75
+//}
 window-rule {
-    match is-active=false
-    exclude app-id="kitty"
-    exclude app-id="firefox"
-    exclude app-id="Godot"
-    exclude app-id="discord"
-    exclude app-id="ONLYOFFICE"
-
-    opacity 0.75
-}
-window-rule {
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match app-id=r#"firefox-esr$"# title="^Picture-in-Picture$"
     match app-id="zoom"
     open-floating true
-}
-window-rule {
-    geometry-corner-radius 0
-    clip-to-geometry true
 }
 window-rule {
     match app-id="VirtualBox Machine"
@@ -501,19 +511,19 @@ binds {
     // === Application Launchers ===
     Mod+T hotkey-overlay-title="Open Terminal" { spawn "kitty"; }
 
-    Mod+N hotkey-overlay-title="Open a File Manager: krusader" { spawn "krusader"; }
+    Mod+N hotkey-overlay-title="Open a File Manager: Thunar" { spawn "thunar"; }
 
     Mod+B hotkey-overlay-title="Run an Application: firefox" { 
         spawn "firefox"; 
     }
 
     Mod+G hotkey-overlay-title="Run an Application: Godot" { 
-        spawn "godot-mono"; 
+        spawn "godot"; 
     }
 
     Mod+Shift+E { quit; }
     Ctrl+Alt+Delete hotkey-overlay-title="Task Manager" {
-        spawn "xfce4-taskmanager"
+        spawn "wintc-taskband"
     }
 
     // === Audio Controls ===
@@ -638,6 +648,7 @@ binds {
     Mod+Shift+R { switch-preset-window-height; }
     Mod+Ctrl+R { reset-window-height; }
     Mod+Ctrl+F { expand-column-to-available-width; }
+    Mod+M {maximize-window-to-edges; }
     Mod+C { center-column; }
     Mod+Ctrl+C { center-visible-columns; }
 
